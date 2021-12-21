@@ -1,0 +1,166 @@
+{
+    "clientProperties": [
+        {
+            "clientProps": {
+                "iSCSIPort": 3260,
+                "clusterType": 0
+            },
+            "client": {
+                "evmgrcPort": 0,
+                "cvdPort": 8400,
+                "clientEntity": {
+                    "hostName": "COMMVAULTTST",
+                    "clientId": 2,
+                    "clientName": "COMMVAULTTST",
+                    "displayName": "COMMVAULTTST",
+                    "_type_": 3,
+                    "clientGUID": "56F9F486-1C62-4006-9F07-F8B58B655A99"
+                }
+            }
+        },
+        {
+            "clientProps": {
+                "iSCSIPort": 3260,
+                "clusterType": 0
+            },
+            "client": {
+                "evmgrcPort": 0,
+                "cvdPort": 0,
+                "clientEntity": {
+                    "hostName": "vCenterLAB",
+                    "clientId": 3,
+                    "clientName": "vCenterLAB",
+                    "displayName": "vCenter LAB",
+                    "_type_": 3,
+                    "clientGUID": "3386ABD9-D27E-4D35-A108-09A80593ACAA"
+                }
+            }
+        },
+        {
+            "clientProps": {
+                "iSCSIPort": 3260,
+                "clusterType": 15
+            },
+            "client": {
+                "evmgrcPort": 0,
+                "cvdPort": 0,
+                "clientEntity": {
+                    "hostName": "VM backup plan_IndexServer",
+                    "clientId": 5,
+                    "clientName": "VM backup plan_IndexServer",
+                    "displayName": "VM backup plan_IndexServer",
+                    "_type_": 3,
+                    "clientGUID": "8AA421D2-051A-4479-9EFC-AF91FE1537A6"
+                }
+            }
+        },
+        {
+            "clientProps": {
+                "iSCSIPort": 3260,
+                "clusterType": 15
+            },
+            "client": {
+                "evmgrcPort": 0,
+                "cvdPort": 0,
+                "clientEntity": {
+                    "hostName": "COMMVAULTTST_AnalyticsServer",
+                    "clientId": 6,
+                    "clientName": "COMMVAULTTST_AnalyticsServer",
+                    "displayName": "COMMVAULTTST_AnalyticsServer",
+                    "_type_": 3,
+                    "clientGUID": "93548F23-07DC-4417-A398-E53A58B55B04"
+                }
+            }
+        },
+        {
+            "clientProps": {
+                "iSCSIPort": 3260,
+                "clusterType": 15
+            },
+            "client": {
+                "evmgrcPort": 0,
+                "cvdPort": 0,
+                "clientEntity": {
+                    "hostName": "Physical Server_IndexServer",
+                    "clientId": 13,
+                    "clientName": "Physical Server_IndexServer",
+                    "displayName": "Physical Server_IndexServer",
+                    "_type_": 3,
+                    "clientGUID": "E37C2A49-A644-4341-BE65-FB6DE2036728"
+                }
+            }
+        },
+        {
+            "clientProps": {
+                "iSCSIPort": 3260,
+                "clusterType": 0
+            },
+            "client": {
+                "evmgrcPort": 8402,
+                "cvdPort": 8400,
+                "clientEntity": {
+                    "hostName": "ZZDSOVM7",
+                    "clientId": 79,
+                    "clientName": "ZZDSOVM7",
+                    "displayName": "ZZDSOVM7",
+                    "_type_": 3,
+                    "clientGUID": "5009DE20-9141-94F7-4926-3BE49C07ECBA"
+                }
+            }
+        },
+        {
+            "clientProps": {
+                "iSCSIPort": 3260,
+                "clusterType": 0
+            },
+            "client": {
+                "evmgrcPort": 8402,
+                "cvdPort": 8400,
+                "clientEntity": {
+                    "hostName": "ZZDSOVM8",
+                    "clientId": 80,
+                    "clientName": "ZZDSOVM8",
+                    "displayName": "ZZDSOVM8",
+                    "_type_": 3,
+                    "clientGUID": "5009A875-A75D-B5F9-3EBA-709D8BADDBD4"
+                }
+            }
+        },
+        {
+            "clientProps": {
+                "iSCSIPort": 3260,
+                "clusterType": 0
+            },
+            "client": {
+                "evmgrcPort": 8402,
+                "cvdPort": 8400,
+                "clientEntity": {
+                    "hostName": "ZZDSOVM5",
+                    "clientId": 81,
+                    "clientName": "ZZDSOVM5",
+                    "displayName": "ZZDSOVM5",
+                    "_type_": 3,
+                    "clientGUID": "5009B915-EFD7-B577-C34A-8A6EE203A81B"
+                }
+            }
+        },
+        {
+            "clientProps": {
+                "iSCSIPort": 3260,
+                "clusterType": 15
+            },
+            "client": {
+                "evmgrcPort": 0,
+                "cvdPort": 0,
+                "clientEntity": {
+                    "hostName": "CommServeDR_IndexServer",
+                    "clientId": 82,
+                    "clientName": "CommServeDR_IndexServer",
+                    "displayName": "CommServeDR_IndexServer",
+                    "_type_": 3,
+                    "clientGUID": "6016B73D-9E24-4F30-9B29-17B9A6367152"
+                }
+            }
+        }
+    ]
+}
