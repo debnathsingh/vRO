@@ -1,0 +1,15 @@
+Use Citrix to login with your account https://remoteapps.corelogic.com/Citrix/remoteappsWeb/
+
+Once there Select Quincy or Plano Jump server, the first to the left of the list.
+
+I was using Plano server but started getting some slow response from vRO java client, so I am testing now using Quincy Jump, since vRO is in Quincy (main site)
+
+To login to vRO use: https://10.216.21.220:8281
+
+vCenter servers: https://10.232.21.241/vsphere-client/?csp
+
+https://10.216.21.241/vsphere-client/?csp
+
+Corelogic vro: NTT-SA-DSO-SVR-Build  /  Password: +jHN,/*8UGNuc!3us
+
+vRO Root creds:-- dr0wRe3lracU=i7
