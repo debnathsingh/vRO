@@ -1,0 +1,54 @@
+
+vCenter LAB
+-----------
+Server: dellqnc01vvcs99.infosolco.com (10.216.21.235)
+https://dellqnc01vvcs99.infosolco.com/
+user: vrotest@vsphere.local
+pass: vcenterlab
+
+For new VMs please use only LAB01 ESX Cluster.
+For space allocation, use only LAB-Volume-01/LAB-Volume-02
+Each new VM name should have DSO_ as prefix
+
+
+vRrealize Orchestrator
+----------------------
+Server: vrotstsrv.infosolco.com (10.216.21.245)
+user: root
+pass: vcenterlab
+
+Start page: https://vrotstsrv.infosolco.com:8281/vco/
+
+vRO 7.6 Client: https://vrotstsrv.infosolco.com:8283/vco-controlcenter/client
+user: vrotest@vsphere.local
+pass: vcenterlab
+
+Control center: https://1vrotstsrv.infosolco.com:8283/vco-controlcenter/config/login.html
+user: root
+pass: vcenterlab
+
+Avamar VM:
+---------
+Server: avamarsrv.infosolco.com (10.216.21.239)
+
+https://avamarsrv.infosolco.com/dtlt/home.html
+user: MCUser
+pass: Changeme123_
+
+Avamar proxy
+------------
+avamarproxytst.infosolco.com (10.216.21.244)
+
+Commvault VM:
+------------
+Server: commvaulttst.infosolco.com (10.216.21.249)
+Windows logon:
+user: administrator
+pass: Changeme123_
+
+commvault console access:
+user/pass: dsoteam/Changeme123$
+https://commvaulttst.infosolco.com/
+https://commvaulttst.infosolco.com/webconsole/sandbox/
+https://commvaulttst.infosolco.com/webconsole/sandbox/apiexplorer/
+
