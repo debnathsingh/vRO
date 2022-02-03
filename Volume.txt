@@ -1,0 +1,65 @@
+GET /v1/host?operating_system_type=ANY&primary_cluster_id=local&sort_by=hostname&sort_order=asc
+Create :
+POST /internal/managed_volume
+{
+  "name": "Agent_Vol",
+  "numChannels": 1,
+  "applicationTag": "MsSql",
+  "volumeSize": 1073741824,
+  "exportConfig": {
+    "hostPatterns": [
+      "10.216.21.33"
+    ],
+    "shareType": "NFS"
+  },
+  "mvType": "AlwaysMounted"
+}
+
+
+Modify
+POST /internal/managed_volume/ManagedVolume:::1c8f912a-5c15-4fb6-8713-38099814de33/resize
+{
+  "newSize": 2684354560
+}
+
+Assigning SLA Policy to Volume
+POST /v2/sla_domain/f4013ff5-91f9-4e50-ac0b-2dd9dc0f1125/assign
+{
+  "managedIds": [
+    "ManagedVolume:::af062671-3e96-44bf-8349-01050bb4b236"
+  ],
+  "shouldApplyToExistingSnapshots": true,
+  "shouldApplyToNonPolicySnapshots": false
+}
+
+SLA Volume
+POST /internal/managed_volume
+{
+  "name": "linux_vol",
+  "volumeSize": 1073741824,
+  "numChannels": 1,
+  "slaClientConfig": {
+    "clientHostId": "Host:::f8c0ec1e-c42e-492d-8c58-73302fae370b",
+    "channelHostMountPaths": [
+      "/home/rubrikBackup"
+    ],
+    "username": "root",
+    "backupScript": {
+      "scriptCommand": "/home/rubrikTest/test.sh"
+    }
+  },
+  "mvType": "SlaBased",
+  "exportConfig": {
+    "shareType": "NFS"
+  }
+}
+
+
+Report
+GET
+https://10.216.21.249/api/v1/vmware/vm
+https://10.216.21.249/api/internal/host/envoy
+https://10.216.21.249/api/v2/sla_domain
+https://10.216.21.249/api/v1/mssql/db?include_backup_task_info=false
+https://10.216.21.249/api/internal/oracle/db?include_backup_task_info=false
+https://10.216.21.249/api/internal/managed_volume
