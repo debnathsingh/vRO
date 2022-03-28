@@ -1,0 +1,92 @@
+System.log("******** rubrikGetFromAPI Inputs ********");
+System.log("rubrikUrl : "+rubrikUrl);
+System.log("rubrikToken : "+rubrikToken);
+System.log("url : "+url);
+System.log("Method : "+method);
+System.log("content : "+content);
+System.log("version : "+version);
+System.log("");
+try
+{
+	if (!version) { var version = 'v1';}
+	if (!rubrikUrl){throw "The rubrik URL is empty"}
+	if (rubrikUrl) {
+		System.log("Looking up Rest Authorization for Rubrik URL : " + rubrikUrl);
+		//Fetching all the host and getting the Rubrik Host
+		var getHosts = RESTHostManager.getHosts();
+	  	for(var restHostId in getHosts){	
+	  		var restHost = RESTHostManager.getHost(getHosts[restHostId]);
+			//Matching the URL of the Rubrik Plugin
+			if (restHost.url.toLowerCase() == rubrikUrl.toLowerCase()) {
+		   		rubrikHost = restHost;
+				System.log("Rubrik Instance Found : "+rubrikHost.Name +", URL : "+restHost.url);
+				break;
+			}
+	  	}
+	}
+	//If the Rubrik Host is found
+	if(rubrikHost)
+	{
+		url = encodeURI("api/" + version + "/" + url);
+		System.log("Executing......Rubrik URL : "+restHost.url + "/" + url + ", Method : " + method+ ", Content : "+content);
+		var request = rubrikHost.createRequest(method, url, content);
+		
+		//Setting Header and Content Type
+		request.contentType = "application\/json";
+		request.setHeader("Accept", "application/json");
+		request.setHeader("Authorization", rubrikToken);
+		var response;
+		var num = 0;
+		//Retrying for 5 times
+		while (num == 0 || num < 5){
+			try {
+				response = request.execute();
+				
+			}
+			catch (e) {
+				System.error("REST call failed");
+			    throw "Stopping Execution, Error : "+e;
+			}
+			var statusCode = response.statusCode;
+			if (statusCode == 200 || statusCode == 201 || statusCode == 202 || statusCode == 204) {
+			    num = 7;
+			}
+			else if (statusCode == 404){ 
+				System.log("Error Code : "+statusCode+", Retrying..........");
+			    num++ ;
+			}
+			else if (statusCode == 406){ 
+				System.log("Error Code : "+statusCode+", Retrying..........");
+			    num++ ;
+			}
+			else if (statusCode == 401){ 
+				System.log("Error Code : "+statusCode+", Retrying..........");
+			    num++ ;
+			}
+			else {
+				System.error("REST Call Status Code = " + statusCode);
+				System.error("REST Response was: "+response.contentAsString);
+				throw "REST Call Status Code = " + statusCode+", REST Response was: "+response.contentAsString;
+				num = 7;
+			}
+		}
+		if(response)
+		{
+			System.log("Response : "+response.contentAsString);
+			return response;
+		}
+		else
+		{
+			throw "No Response found";
+		}
+	}
+	else
+	{
+		throw "The Rubrik URL"+rubrikUrl+"not found in the REST plugin";
+	}
+}
+catch(e)
+{
+	var error = "Error occured in Actionelement. Error Details : "+e;
+	throw error;
+}	
