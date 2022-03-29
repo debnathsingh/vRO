@@ -1,0 +1,3 @@
+var plainCredentials = rubrikUsername + ":" + rubrikPassword;
+var base64Credentials = System.getModule("com.CLP.rubrik.commonactions").rubrikEncodeBase64UTF8(plainCredentials);
+request.setHeader("Authorization", "Basic "+base64Credentials);
