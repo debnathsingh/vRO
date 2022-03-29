@@ -1,0 +1,43 @@
+System.log("******** rubrikGetSlaId Inputs ********");
+System.log("rubrikUrl : "+rubrikUrl);
+System.log("rubrikToken : "+rubrikToken);
+System.log("slaName : "+slaName);
+System.log("");
+try
+{
+	if (slaName == 'Unprotected') {
+		return sla_id = 'UNPROTECTED';
+	}
+	var cluster_version = System.getModule("com.CLP.rubrik.commonactions").rubrikGetClusterVersion(rubrikUrl,rubrikToken);
+	if (Number(cluster_version.split('.')[0]) > 4) {
+		var api_version = 'v2';
+	} else {
+		var api_version = 'v1';
+	}
+	var method = "GET";
+	var content = undefined;
+	var sla_id = null;
+	var url = "sla_domain?limit=9999&primary_cluster_id=local";
+	var response = System.getModule("com.CLP.rubrik.commonactions").rubrikGetFromAPI(rubrikUrl,rubrikToken,url,method,content,api_version);
+	var json = (JSON.parse(response.contentAsString)).data;
+	for(var i = 0; i < json.length; i++) {
+		var obj = json[i];
+		if(obj.name.toLowerCase() == slaName.toLowerCase()) {
+			sla_id = obj.id;
+		}
+	}
+	if(sla_id)
+	{
+		System.log("SLA ID : "+sla_id);
+		return sla_id;
+	}
+	else
+	{
+		throw "SLA Domain not found : "+slaName;
+	}
+}
+catch(e)
+{
+	var error = "Error occured in Actionelement. Error Details : "+e;
+	throw error;
+}

@@ -1,0 +1,22 @@
+System.log("******** rubrikSetSlaByVmId Inputs ********");
+System.log("rubrikUrl : "+rubrikUrl);
+System.log("rubrikToken : "+rubrikToken);
+System.log("slaId : "+slaId);
+System.log("vmId : "+vmId);
+System.log("");
+
+try
+{
+	var method = "PATCH";
+	var url = "vmware/vm/" + vmId;
+	var content = '{"configuredSlaDomainId":"' + slaId + '"}';
+	var response = System.getModule("com.CLP.rubrik.commonactions").rubrikGetFromAPI(rubrikUrl,rubrikToken,url,method,content)
+	var json = (JSON.parse(response.contentAsString));
+	if (json.effectiveSlaDomain){return json.effectiveSlaDomain.name;}
+	else {return "Not Assigned";}
+}
+catch(e)
+{
+	var error = "Error occured in Actionelement. Error Details : "+e;
+	throw error;
+}

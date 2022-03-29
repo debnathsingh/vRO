@@ -1,0 +1,35 @@
+System.log("******** rubrikDeleteManagedVolume Inputs ********");
+System.log("rubrikUrl : "+rubrikUrl);
+System.log("rubrikToken : "+rubrikToken);
+System.log("Volume Name : "+volumeId);
+System.log("Preserved Snapshot : "+preserveSnapshot);
+System.log("");
+
+try
+{
+	var method = "DELETE";
+	if(preserveSnapshot.toLowerCase()=="no")
+	{
+		var url = "managed_volume/"+volumeId+"?preserve_snapshots="+false;
+	}
+	else
+	{
+		var url = "managed_volume/"+volumeId+"?preserve_snapshots="+true;
+	}
+	var version = "internal"
+	var response = System.getModule("com.CLP.rubrik.commonactions").rubrikGetFromAPI(rubrikUrl,rubrikToken,url,method,null,version);
+	System.log("The response is "+ response);
+	if (response.statusCode == 204) 
+	{
+		return "The volume is deleted";
+	} 
+	else 
+	{
+		throw "Error occured while deleting volume"
+	}	
+}
+catch(e)
+{
+	var error = "Error occured in Actionelement. Error Details : "+e;
+	throw error;
+}
