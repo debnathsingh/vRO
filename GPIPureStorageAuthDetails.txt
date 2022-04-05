@@ -1,0 +1,6 @@
+https://10.159.231.26/api/1.17/auth/session
+Body : {"api_token":"a666c172-4655-69d9-79f3-073a725585b0"}
+Cookie : session=.eJxFjMsKgzAQAH-l7NmDmhAx4LXSq4cgXiSPtQ9MlFVbqPjvtVLocYZhVmhHJK8DhhnkTAtG0OtpbpFoIJDxDwntQO5gGnoEucLJgATLqqf159Co_NaUyWiuRQFbBNPdHc2yN1nCRSY4y5ntOIo0z3hqY820Ebvo3LdfJqSg_X9sgnqYUiU2rcbGu5eu1bupL_t8-wB0gzjF.FSXzfA.Swwqi5qV1c4tIWVmjScxqksyKRI
+https://10.159.231.26/api/1.17/host
+APIKey api_token: {kjsfhkjsdhfksfdhkhsdkjfh}
+
