@@ -17,6 +17,7 @@ try
 		if(attribute.value.url.toLowerCase() == wfRubrikUrl.toLowerCase())
 		{
 			outRubrikToken = attribute.value.token;
+			System.log("Matching Attribute : "+attribute.name);
 			System.log("Matching URL : "+attribute.value.url);
 			System.log("Matching Token : "+outRubrikToken);
 			System.log("");
