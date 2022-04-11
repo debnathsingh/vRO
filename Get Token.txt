@@ -1,0 +1,30 @@
+System.log("******** Get the Token Inputs ********");
+System.log("Rubrik URL : "+wfRubrikUrl)
+System.log("Rubrik Configuration : "+attRubrikTokenConf);
+System.log("");
+
+//Main script
+try
+{
+	//Get the attributes of Token
+	var attributes = attRubrikTokenConf.attributes;
+	for each(var attribute in attributes)
+	{
+		System.log("Quering Attribute : "+attribute.name);
+		System.log("Quering Attribute URL : "+attribute.value.url);
+		System.log("Quering Attribute Token : "+attribute.value.token);
+		//Match the URL with the input URL
+		if(attribute.value.url.toLowerCase() == wfRubrikUrl.toLowerCase())
+		{
+			outRubrikToken = attribute.value.token;
+			System.log("Matching URL : "+attribute.value.url);
+			System.log("Matching Token : "+outRubrikToken);
+		}
+		System.log("");
+	}
+}
+catch(e)
+{
+	var error = "Error occured in 'Get the Token' Task. Error Details : "+e;
+	throw error;
+}
