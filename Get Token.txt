@@ -11,7 +11,7 @@ try
 	for each(var attribute in attributes)
 	{
 		System.log("Quering Attribute : "+attribute.name);
-		System.log("Quering Attribute URL : "+attribute.value.url);
+		System.log("Quering Attribute URL : "+attribute.value.url+" and matching with "+wfRubrikUrl);
 		System.log("Quering Attribute Token : "+attribute.value.token);
 		//Match the URL with the input URL
 		if(attribute.value.url.toLowerCase() == wfRubrikUrl.toLowerCase())
@@ -19,6 +19,8 @@ try
 			outRubrikToken = attribute.value.token;
 			System.log("Matching URL : "+attribute.value.url);
 			System.log("Matching Token : "+outRubrikToken);
+			System.log("");
+			break;
 		}
 		System.log("");
 	}
