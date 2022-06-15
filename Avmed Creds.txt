@@ -1,0 +1,9 @@
+jump servers 165.136.52.153 and 165.136.52.154,
+vro server is : PTCPAADSOVROSRV01
+vRO IP Address: 172.17.211.34 
+vRO client 172.17.209.80
+https://avmederpm.avmed.com/pwcweb/
+
+User: Avmed\vbisht
+Beckham@11
+
