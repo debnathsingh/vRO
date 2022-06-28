@@ -82,8 +82,13 @@ try
 	//Create the browser access path
 	if(wfBrowserAccess=="yes")
 	{
-		var browserAccess = '
-		"browser_access": true,
+		var browerAccess = new Object();
+		browerAccess.browser_access = true;
+		browerAccess.browser_access_settings.shared_links_enabled = wfSharedLinksEnabled;
+		browerAccess.browser_access_settings.link_force_password = wfLinkForcePassword;
+		browerAccess.browser_access_settings.link_allow_rw = wfLinkAllowRw;
+		browerAccess.browser_access_settings.external_share_url = wfExternalShareUrl
+		var browserAccess = '"browser_access": true,
 		"browser_access_settings": {
 			"shared_links_enabled": wfSharedLinksEnabled,
 			"link_force_password": wfLinkForcePassword,
@@ -100,7 +105,7 @@ try
 				"deny_users": browser_deny_users
 			}
 		}
-		'
+'
 	}
 	else
 	{
@@ -110,6 +115,7 @@ try
 	//Check if the share has Auth All
 	if(wfAuthall=="yes")
 	{
+		var authall = true;
 		var groups_ro = [];
 		var groups_rw = [];
 		var deny_groups = [];
@@ -119,36 +125,13 @@ try
 	}
 	else
 	{
+		var authall = false;
 		if(wfGroupsRo){var groups_ro = wfGroupsRo.split(",");}else{var groups_ro=[];}
 		if(wfGroupsRw){var groups_rw = wfGroupsRw.split(",");}else{var groups_rw=[];}
 		if(wfDenyGroups){var deny_groups = wfDenyGroups.split(",");}else{var deny_groups=[];}
 		if(wfUsersRo){var users_ro = wfUsersRo.split(",");}else{var users_ro=[];}
 		if(wfUsersRw){var users_rw = wfUsersRw.split(",");}else{var users_rw=[];}
 		if(wfDenyUsers){var deny_users = wfDenyUsers.split(",");}else{var deny_users=[];}
-	}
-	
-	//Create the Auth JSON
-	if(wfAuthall=="yes")
-	{
-		var auth = '
-		"auth": {
-			"authall": true
-		}
-		'
-	}
-	else
-	{
-		var auth = '
-		"auth": {
-			"authall": false,
-			"rw_groups": groups_rw,
-			"ro_groups": groups_ro,
-			"deny_groups": deny_groups,
-			"ro_users": users_ro,
-			"rw_users": users_rw,
-			"deny_users": deny_users
-		}
-		'
 	}
 	
 	//Body of the Content
@@ -171,7 +154,15 @@ try
   	"veto_files": wfVetoFiles,
   	"fruit_enabled": wfFruitEnabled,
   	"smb_encrypt": wfSmbEncrypt,
-  	auth
+  	"auth": {
+		"authall": authall,
+		"rw_groups": groups_rw,
+		"ro_groups": groups_ro,
+		"deny_groups": deny_groups,
+		"ro_users": users_ro,
+		"rw_users": users_rw,
+		"deny_users": deny_users
+	}
 }
 );
 }
@@ -180,4 +171,3 @@ catch(e)
 	var error = "Error occured in 'Create the Body'. Error Details : "+e;
 	throw error;
 }
-
