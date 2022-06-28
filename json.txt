@@ -1,0 +1,111 @@
+System.log("************* Create the Body *************");
+System.log("Name : "+wfName);
+System.log("Path : "+wfPath);
+System.log("Comment : "+wfComment);
+System.log("Read Only : "+wfReadonly);
+System.log("Browseable : "+wfBrowseable);
+System.log("Hosts Allow : "+wfHostsAllow);
+System.log("Hide Unreadable : "+wfHideUnreadable);
+System.log("Enable previous vers : "+wfEnablePreviousVers);
+System.log("Case sensitive : "+wfCaseSensitive);
+System.log("Enable snapshot dirs : "+wfEnableSnapshotDirs);
+System.log("Case sensitive : "+case_sensitive);
+System.log("Case sensitive : "+case_sensitive);
+System.log("Case sensitive : "+case_sensitive);
+System.log("Case sensitive : "+case_sensitive);
+System.log("Case sensitive : "+case_sensitive);
+
+System.log("");
+try
+{
+	//replace the special characters
+	wfPath = wfPath.replace("/","//");
+	
+	//Set the value of json
+	if(wfReadonly=="yes"){wfReadonly=true;}else{wfReadonly=false;}
+	if(wfBrowseable=="yes"){wfBrowseable=true;}else{wfBrowseable=false;}
+	if(wfHideUnreadable=="yes"){wfHideUnreadable=true;}else{wfHideUnreadable=false;}
+	if(wfEnablePreviousVers=="yes"){wfEnablePreviousVers=true;}else{wfEnablePreviousVers=false;}
+	if(wfCaseSensitive=="yes"){wfCaseSensitive=true;}else{wfCaseSensitive=false;}
+	if(wfEnableSnapshotDirs=="yes"){wfEnableSnapshotDirs=true;}else{wfEnableSnapshotDirs=false;}
+	if(readonly=="yes"){readonly=true;}else{readonly=false;}
+	if(readonly=="yes"){readonly=true;}else{readonly=false;}
+	if(readonly=="yes"){readonly=true;}else{readonly=false;}
+	
+	//Body of the Content
+	content = JSON.stringify(
+{
+	"name": wfName,
+  	"path": wfPath,
+  	"comment": wfComment,
+  	"readonly": wfReadonly,
+  	"browseable": wfBrowseable,
+  	"hosts_allow": wfHostsAllow,
+  	"hide_unreadable": wfHideUnreadable,
+  	"enable_previous_vers": wfEnablePreviousVers,
+  	"case_sensitive": wfCaseSensitive,
+  	"enable_snapshot_dirs": wfEnableSnapshotDirs,
+  	"homedir_support": 0,
+  	"mobile": false,
+  	"browser_access": false,
+  	"browser_access_settings": {
+    	"shared_links_enabled": false,
+    	"link_force_password": true,
+    	"link_allow_rw": false,
+    	"external_share_url": "string",
+    	"link_expire_limit": 0,
+    	"link_auth": {
+      		"authall": true,
+     		"allow_groups_ro": [
+        		"string"
+      		],
+      		"allow_groups_rw": [
+        		"string"
+      		],
+      		"deny_groups": [
+        		"string"
+      		],
+      		"allow_users_ro": [
+        		"string"
+      		],
+      		"allow_users_rw": [
+        		"string"
+      		],
+      		"deny_users": [
+        		"string"
+      		]
+    	}
+  	},
+  	"aio_enabled": true,
+  	"veto_files": "",
+  	"fruit_enabled": false,
+  	"smb_encrypt": "",
+  	"auth": {
+    	"authall": true,
+    	"rw_groups": [
+      		"string"
+    	],
+    	"ro_groups": [
+      		"string"
+    	],
+    	"deny_groups": [
+      		"string"
+    	],
+    	"ro_users": [
+      		"string"
+    	],
+    	"rw_users": [
+      		"string"
+    	],
+    	"deny_users": [
+      		"string"
+    	]
+  	}
+}
+);
+}
+catch(e)
+{
+	var error = "Error occured in 'Create the Body'. Error Details : "+e;
+	throw error;
+}
