@@ -9,13 +9,39 @@ System.log("Hide Unreadable : "+wfHideUnreadable);
 System.log("Enable previous vers : "+wfEnablePreviousVers);
 System.log("Case sensitive : "+wfCaseSensitive);
 System.log("Enable snapshot dirs : "+wfEnableSnapshotDirs);
+System.log("Homedir_support : "+wfHomedirSupport);
+System.log("Mobile : "+wfMobile);
+System.log("Aio enabled : "+wfAioEnabled);
+System.log("Veto Files : "+wfVetoFiles);
 System.log("Case sensitive : "+case_sensitive);
-System.log("Case sensitive : "+case_sensitive);
-System.log("Case sensitive : "+case_sensitive);
-System.log("Case sensitive : "+case_sensitive);
-System.log("Case sensitive : "+case_sensitive);
-
+System.log("Fruit Enabled : "+wfFruitEnabled);
+System.log("Smb encrypt : "+wfSmbEncrypt);
 System.log("");
+
+System.log("Browser Access : "+wfBrowserAccess);
+System.log("Share Linked Enabled : "+wfSharedLinksEnabled);
+System.log("Link force password : "+wfLinkForcePassword);
+System.log("Link Allow rw : "+wfLinkAllowRw);
+System.log("External Share Url : "+wfExternalShareUrl);
+System.log("Link expire limit : "+wfLinkExpireLimit);
+System.log("Browser Auth All : "+wfBrowserAuthAll);
+System.log("allow_groups_ro : "+wfAllowGroupsRo);
+System.log("allow_groups_rw : "+wfAllowGroupsRw);
+System.log("browser_deny_groups : "+wfBrowserDenyGroups);
+System.log("allow_users_ro : "+wfAllowUsersRo);
+System.log("allow_users_rw : "+wfAllowUsersRw);
+System.log("browser_deny_users : "+wfBrowserDenyUsers);
+System.log("");
+
+System.log("Auth All : "+wfAuthall);
+System.log("groups_ro : "+wfGroupsRo);
+System.log("groups_rw : "+wfGroupsRw);
+System.log("deny_groups : "+wfDenyGroups);
+System.log("users_ro : "+wfUsersRo);
+System.log("users_rw : "+wfUsersRw);
+System.log("deny_users : "+wfDenyUsers);
+System.log("");
+
 try
 {
 	//replace the special characters
@@ -28,9 +54,102 @@ try
 	if(wfEnablePreviousVers=="yes"){wfEnablePreviousVers=true;}else{wfEnablePreviousVers=false;}
 	if(wfCaseSensitive=="yes"){wfCaseSensitive=true;}else{wfCaseSensitive=false;}
 	if(wfEnableSnapshotDirs=="yes"){wfEnableSnapshotDirs=true;}else{wfEnableSnapshotDirs=false;}
-	if(readonly=="yes"){readonly=true;}else{readonly=false;}
-	if(readonly=="yes"){readonly=true;}else{readonly=false;}
-	if(readonly=="yes"){readonly=true;}else{readonly=false;}
+	if(wfMobile=="yes"){wfMobile=true;}else{wfMobile=false;}
+	if(wfAioEnabled=="yes"){wfAioEnabled=true;}else{wfAioEnabled=false;}
+	if(wfFruitEnabled=="yes"){wfFruitEnabled=true;}else{wfFruitEnabled=false;}
+	if(wfSharedLinksEnabled=="yes"){wfSharedLinksEnabled=true;}else{wfSharedLinksEnabled=false;}
+	
+	//Check if the Browser have Auth all
+	if(wfBrowserAuthAll=="yes")
+	{
+		var allow_groups_ro = [];
+		var allow_groups_rw = [];
+		var browser_deny_groups = [];
+		var allow_users_ro = [];
+		var allow_users_rw = [];
+		var browser_deny_users = [];
+	}
+	else
+	{
+		if(wfAllowGroupsRo){var allow_groups_ro = wfAllowGroupsRo.split(",");}else{var allow_groups_ro=[];}
+		if(wfAllowGroupsRw){var allow_groups_rw = wfAllowGroupsRw.split(",");}else{var allow_groups_rw=[];}
+		if(wfBrowserDenyGroups){var browser_deny_groups = wfBrowserDenyGroups.split(",");}else{var browser_deny_groups=[];}
+		if(wfAllowUsersRo){var allow_users_ro = wfAllowUsersRo.split(",");}else{var allow_users_ro=[];}
+		if(wfAllowUsersRw){var allow_users_rw = wfAllowUsersRw.split(",");}else{var allow_users_rw=[];}
+		if(wfBrowserDenyUsers){var browser_deny_users = wfBrowserDenyUsers.split(",");}else{var browser_deny_users=[];}
+	}
+	
+	//Create the browser access path
+	if(wfBrowserAccess=="yes")
+	{
+		var browserAccess = '
+		"browser_access": true,
+		"browser_access_settings": {
+			"shared_links_enabled": wfSharedLinksEnabled,
+			"link_force_password": wfLinkForcePassword,
+			"link_allow_rw": wfLinkAllowRw,
+			"external_share_url": wfExternalShareUrl,
+			"link_expire_limit": wfLinkExpireLimit,
+			"link_auth": {
+				"authall": true,
+				"allow_groups_ro": allow_groups_ro,
+				"allow_groups_rw": allow_groups_rw,
+				"deny_groups": browser_deny_groups,
+				"allow_users_ro": allow_users_ro,
+				"allow_users_rw": allow_users_rw,
+				"deny_users": browser_deny_users
+			}
+		}
+		'
+	}
+	else
+	{
+		var browserAccess = '"browser_access": false'
+	}
+	
+	//Check if the share has Auth All
+	if(wfAuthall=="yes")
+	{
+		var groups_ro = [];
+		var groups_rw = [];
+		var deny_groups = [];
+		var users_ro = [];
+		var users_rw = [];
+		var deny_users = [];
+	}
+	else
+	{
+		if(wfGroupsRo){var groups_ro = wfGroupsRo.split(",");}else{var groups_ro=[];}
+		if(wfGroupsRw){var groups_rw = wfGroupsRw.split(",");}else{var groups_rw=[];}
+		if(wfDenyGroups){var deny_groups = wfDenyGroups.split(",");}else{var deny_groups=[];}
+		if(wfUsersRo){var users_ro = wfUsersRo.split(",");}else{var users_ro=[];}
+		if(wfUsersRw){var users_rw = wfUsersRw.split(",");}else{var users_rw=[];}
+		if(wfDenyUsers){var deny_users = wfDenyUsers.split(",");}else{var deny_users=[];}
+	}
+	
+	//Create the Auth JSON
+	if(wfAuthall=="yes")
+	{
+		var auth = '
+		"auth": {
+			"authall": true
+		}
+		'
+	}
+	else
+	{
+		var auth = '
+		"auth": {
+			"authall": false,
+			"rw_groups": groups_rw,
+			"ro_groups": groups_ro,
+			"deny_groups": deny_groups,
+			"ro_users": users_ro,
+			"rw_users": users_rw,
+			"deny_users": deny_users
+		}
+		'
+	}
 	
 	//Body of the Content
 	content = JSON.stringify(
@@ -45,62 +164,14 @@ try
   	"enable_previous_vers": wfEnablePreviousVers,
   	"case_sensitive": wfCaseSensitive,
   	"enable_snapshot_dirs": wfEnableSnapshotDirs,
-  	"homedir_support": 0,
-  	"mobile": false,
-  	"browser_access": false,
-  	"browser_access_settings": {
-    	"shared_links_enabled": false,
-    	"link_force_password": true,
-    	"link_allow_rw": false,
-    	"external_share_url": "string",
-    	"link_expire_limit": 0,
-    	"link_auth": {
-      		"authall": true,
-     		"allow_groups_ro": [
-        		"string"
-      		],
-      		"allow_groups_rw": [
-        		"string"
-      		],
-      		"deny_groups": [
-        		"string"
-      		],
-      		"allow_users_ro": [
-        		"string"
-      		],
-      		"allow_users_rw": [
-        		"string"
-      		],
-      		"deny_users": [
-        		"string"
-      		]
-    	}
-  	},
-  	"aio_enabled": true,
-  	"veto_files": "",
-  	"fruit_enabled": false,
-  	"smb_encrypt": "",
-  	"auth": {
-    	"authall": true,
-    	"rw_groups": [
-      		"string"
-    	],
-    	"ro_groups": [
-      		"string"
-    	],
-    	"deny_groups": [
-      		"string"
-    	],
-    	"ro_users": [
-      		"string"
-    	],
-    	"rw_users": [
-      		"string"
-    	],
-    	"deny_users": [
-      		"string"
-    	]
-  	}
+  	"homedir_support": wfHomedirSupport,
+  	"mobile": wfMobile,
+  	browserAccess,
+	"aio_enabled": wfAioEnabled,
+  	"veto_files": wfVetoFiles,
+  	"fruit_enabled": wfFruitEnabled,
+  	"smb_encrypt": wfSmbEncrypt,
+  	auth
 }
 );
 }
@@ -109,3 +180,4 @@ catch(e)
 	var error = "Error occured in 'Create the Body'. Error Details : "+e;
 	throw error;
 }
+
