@@ -59,112 +59,90 @@ try
 	if(wfFruitEnabled=="yes"){wfFruitEnabled=true;}else{wfFruitEnabled=false;}
 	if(wfSharedLinksEnabled=="yes"){wfSharedLinksEnabled=true;}else{wfSharedLinksEnabled=false;}
 	
-	//Check if the Browser have Auth all
-	if(wfBrowserAuthAll=="yes")
-	{
-		var allow_groups_ro = [];
-		var allow_groups_rw = [];
-		var browser_deny_groups = [];
-		var allow_users_ro = [];
-		var allow_users_rw = [];
-		var browser_deny_users = [];
-	}
-	else
-	{
-		if(wfAllowGroupsRo){var allow_groups_ro = wfAllowGroupsRo.split(",");}else{var allow_groups_ro=[];}
-		if(wfAllowGroupsRw){var allow_groups_rw = wfAllowGroupsRw.split(",");}else{var allow_groups_rw=[];}
-		if(wfBrowserDenyGroups){var browser_deny_groups = wfBrowserDenyGroups.split(",");}else{var browser_deny_groups=[];}
-		if(wfAllowUsersRo){var allow_users_ro = wfAllowUsersRo.split(",");}else{var allow_users_ro=[];}
-		if(wfAllowUsersRw){var allow_users_rw = wfAllowUsersRw.split(",");}else{var allow_users_rw=[];}
-		if(wfBrowserDenyUsers){var browser_deny_users = wfBrowserDenyUsers.split(",");}else{var browser_deny_users=[];}
-	}
+	//Creating the JS Object
+	var jsonObj = new Object();
 	
-	//Create the browser access path
+	jsonObj.name = wfName;
+	jsonObj.path = wfPath;
+	jsonObj.comment = wfComment;
+	jsonObj.readonly = wfReadonly;
+	jsonObj.browseable = wfBrowseable;
+	jsonObj.hosts_allow = wfHostsAllow;
+  	jsonObj.hide_unreadable = wfHideUnreadable;
+  	jsonObj.enable_previous_vers = wfEnablePreviousVers;
+  	jsonObj.case_sensitive = wfCaseSensitive;
+  	jsonObj.enable_snapshot_dirs = wfEnableSnapshotDirs;
+  	jsonObj.homedir_support = wfHomedirSupport;
+  	jsonObj.mobile = wfMobile;
+	jsonObj.aio_enabled = wfAioEnabled;
+  	jsonObj.veto_files = wfVetoFiles;
+  	jsonObj.fruit_enabled = wfFruitEnabled;
+  	jsonObj.smb_encrypt = wfSmbEncrypt;
+	
+	//Web Brower Auth Condition
 	if(wfBrowserAccess=="yes")
 	{
-		var browerAccess = new Object();
-		browerAccess.browser_access = true;
-		browerAccess.browser_access_settings.shared_links_enabled = wfSharedLinksEnabled;
-		browerAccess.browser_access_settings.link_force_password = wfLinkForcePassword;
-		browerAccess.browser_access_settings.link_allow_rw = wfLinkAllowRw;
-		browerAccess.browser_access_settings.external_share_url = wfExternalShareUrl
-		var browserAccess = '"browser_access": true,
-		"browser_access_settings": {
-			"shared_links_enabled": wfSharedLinksEnabled,
-			"link_force_password": wfLinkForcePassword,
-			"link_allow_rw": wfLinkAllowRw,
-			"external_share_url": wfExternalShareUrl,
-			"link_expire_limit": wfLinkExpireLimit,
-			"link_auth": {
-				"authall": true,
-				"allow_groups_ro": allow_groups_ro,
-				"allow_groups_rw": allow_groups_rw,
-				"deny_groups": browser_deny_groups,
-				"allow_users_ro": allow_users_ro,
-				"allow_users_rw": allow_users_rw,
-				"deny_users": browser_deny_users
-			}
+		jsonObj.browser_access = true;
+		jsonObj.browser_access_settings.shared_links_enabled = wfSharedLinksEnabled;
+		jsonObj.browser_access_settings.link_force_password = wfLinkForcePassword;
+		jsonObj.browser_access_settings.link_allow_rw = wfLinkAllowRw;
+		jsonObj.browser_access_settings.external_share_url = wfExternalShareUrl
+		jsonObj.browser_access_settings.link_expire_limit = wfLinkExpireLimit
+		//Check if the Authentication is for all the users
+		if(wfBrowserAuthAll=="yes")
+		{
+			jsonObj.browser_access_settings.link_auth.authall = true;
 		}
-'
+		else
+		{
+			//Converting the comma seperated value to array object
+			if(wfAllowGroupsRo){var allow_groups_ro = wfAllowGroupsRo.split(",");}else{var allow_groups_ro=[];}
+			if(wfAllowGroupsRw){var allow_groups_rw = wfAllowGroupsRw.split(",");}else{var allow_groups_rw=[];}
+			if(wfBrowserDenyGroups){var browser_deny_groups = wfBrowserDenyGroups.split(",");}else{var browser_deny_groups=[];}
+			if(wfAllowUsersRo){var allow_users_ro = wfAllowUsersRo.split(",");}else{var allow_users_ro=[];}
+			if(wfAllowUsersRw){var allow_users_rw = wfAllowUsersRw.split(",");}else{var allow_users_rw=[];}
+			if(wfBrowserDenyUsers){var browser_deny_users = wfBrowserDenyUsers.split(",");}else{var browser_deny_users=[];}
+			
+			//Creating the rest of the object based on the user Condition
+			jsonObj.browser_access_settings.link_auth.authall = false;
+			jsonObj.browser_access_settings.link_auth.allow_groups_ro = allow_groups_ro;
+			jsonObj.browser_access_settings.link_auth.allow_groups_rw = allow_groups_rw;
+			jsonObj.browser_access_settings.link_auth.deny_groups = browser_deny_groups;
+			jsonObj.browser_access_settings.link_auth.allow_users_ro = allow_users_ro;
+			jsonObj.browser_access_settings.link_auth.allow_users_rw = allow_users_rw;
+			jsonObj.browser_access_settings.link_auth.deny_users = browser_deny_users;
+		}
 	}
 	else
 	{
-		var browserAccess = '"browser_access": false'
+		jsonObj.browser_access = false;
 	}
 	
-	//Check if the share has Auth All
+	//Share Auth condition
 	if(wfAuthall=="yes")
 	{
-		var authall = true;
-		var groups_ro = [];
-		var groups_rw = [];
-		var deny_groups = [];
-		var users_ro = [];
-		var users_rw = [];
-		var deny_users = [];
+		jsonObj.auth.authall = true;
 	}
 	else
 	{
-		var authall = false;
-		if(wfGroupsRo){var groups_ro = wfGroupsRo.split(",");}else{var groups_ro=[];}
-		if(wfGroupsRw){var groups_rw = wfGroupsRw.split(",");}else{var groups_rw=[];}
+		jsonObj.auth.authall = false;
+		
+		//Converting the comma seperated value to array object
+		if(wfGroupsRo){var ro_groups = wfGroupsRo.split(",");}else{var ro_groups=[];}
+		if(wfGroupsRw){var rw_groups = wfGroupsRw.split(",");}else{var rw_groups=[];}
 		if(wfDenyGroups){var deny_groups = wfDenyGroups.split(",");}else{var deny_groups=[];}
-		if(wfUsersRo){var users_ro = wfUsersRo.split(",");}else{var users_ro=[];}
-		if(wfUsersRw){var users_rw = wfUsersRw.split(",");}else{var users_rw=[];}
+		if(wfUsersRo){var ro_users = wfUsersRo.split(",");}else{var ro_users=[];}
+		if(wfUsersRw){var rw_users = wfUsersRw.split(",");}else{var rw_users=[];}
 		if(wfDenyUsers){var deny_users = wfDenyUsers.split(",");}else{var deny_users=[];}
+		
+		//Creating the rest of the object based on the user Condition
+		jsonObj.auth.rw_groups = rw_groups;
+		jsonObj.auth.ro_groups = ro_groups;
+		jsonObj.auth.deny_groups = deny_groups;
+		jsonObj.auth.ro_users = ro_users;
+		jsonObj.auth.rw_users = rw_users;
+		jsonObj.auth.deny_users = deny_users;
 	}
-	
-	//Body of the Content
-	content = JSON.stringify(
-{
-	"name": wfName,
-  	"path": wfPath,
-  	"comment": wfComment,
-  	"readonly": wfReadonly,
-  	"browseable": wfBrowseable,
-  	"hosts_allow": wfHostsAllow,
-  	"hide_unreadable": wfHideUnreadable,
-  	"enable_previous_vers": wfEnablePreviousVers,
-  	"case_sensitive": wfCaseSensitive,
-  	"enable_snapshot_dirs": wfEnableSnapshotDirs,
-  	"homedir_support": wfHomedirSupport,
-  	"mobile": wfMobile,
-  	browserAccess,
-	"aio_enabled": wfAioEnabled,
-  	"veto_files": wfVetoFiles,
-  	"fruit_enabled": wfFruitEnabled,
-  	"smb_encrypt": wfSmbEncrypt,
-  	"auth": {
-		"authall": authall,
-		"rw_groups": groups_rw,
-		"ro_groups": groups_ro,
-		"deny_groups": deny_groups,
-		"ro_users": users_ro,
-		"rw_users": users_rw,
-		"deny_users": deny_users
-	}
-}
-);
 }
 catch(e)
 {
