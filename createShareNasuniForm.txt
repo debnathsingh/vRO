@@ -1,0 +1,103 @@
+Filer
+
+ftc-nas-flr01.avmed.com
+Volume
+
+AppVol
+Folder
+Name
+The name of the CIFS share. The following characters are not valid for share names: < > : " / \ | ? *
+Note: In Active Directory mode, %U may be used anywhere in the share name to substitute the user name. For example, "%U_home" will create shares of the form "username_home".
+
+Comment
+Visible Share
+
+If checked, this share will appear when browsing.
+
+Read Only
+
+If checked, users can not change the contents of the share.
+
+Advanced Settings
+Allowed Hosts
+Hosts allowed to access the share. Enter IP addresses or IP address/netmask values separated by spaces. Blank allows all hosts
+
+Block files
+Specify file or directory name patterns that the share will make both invisible and inaccessible. Enter one pattern per line. The wildcard characters '*' and '?' may be used to specify multiple files or directories. The '/' character is not valid. Note: This feature can break compatibility with some clients
+
+Authentication
+
+Authenticate only specified Groups and Users
+If authentication for only specified Users and Groups is selected, no user will have access to the share until a user, or a group the user is a member of, is added below.
+
+Groups
+NAME	ACCESS	
+No groups selected...
+Users
+NAME	ACCESS	
+No users selected...
+Hide Unreadable Files
+
+Files and folders that the user cannot access do not appear in folder listings
+
+Enable Previous Versions
+
+Allow users to view and restore files using the Previous Versions tab in Windows
+
+Case-Sensitive Paths
+
+Files and folders are considered different if the case of letters in the name differs. (Enabling case sensitivity aids performance)
+
+Enable Snapshot Directories
+
+Clients are allowed to access hidden snapshot directories within the share. Volumes must have Snapshot Directories enabled
+
+User Folders Support
+
+Disabled
+When enabled, the target folder path for the share is automatically appended with a folder named for the user. Note: If this option is used on a case-sensitive volume, it is recommended to disable case-sensitive paths.
+
+Sync and Mobile Access
+
+Enable sync and/or mobile device support
+
+Web Access
+
+Enable web access
+
+Web Access Settings
+Enable Shared Links
+
+Allow creating shared links to Web Access.
+
+External Hostname
+Optionally specify an external hostname for shared links.
+
+Maximum Expiration
+Maximum number of days until shared links expire. Set to 0 for unlimited.
+
+Require Password
+
+Require passwords for all shared links.
+
+Allow Writable Shared Links to Directories
+
+Allow the user to create writable shared links to directories.
+
+Shared Link Permissions
+
+Allow all Users
+Allow the specified Users and Groups to create shared links. If permissions for only specified Users and Groups is selected, no user will have access to the shared links until a user, or a group the user is a member of, is added below.
+
+Enable Asynchronous I/O
+
+Enable concurrent read/write access per client connection.
+
+Enhanced Support for Mac OS X
+
+Enhances share behavior, including SMB2 protocol support, for Mac OS X Clients when possible.
+
+SMB Encryption
+
+Optional
+Control if clients are desired or required to use SMB encryption when connecting to the share. Includes SMB3 encryption for Windows clients.
