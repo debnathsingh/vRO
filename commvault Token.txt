@@ -1,0 +1,107 @@
+System.log("******************************");
+System.log("Order ID : "+wfTransactionID);
+System.log("Requestor Name : "+wfRequestorName);
+System.log("******************************");
+
+var getResthosts = RESTHostManager.getHosts();
+
+System.debug("resthost: " + getResthosts );
+//looping all the
+for (var restHostid in getResthosts) {
+	System.log("Host ID : " + getResthosts[restHostid])
+	var resthost = RESTHostManager.getHost(getResthosts[restHostid]);
+	System.debug("url:      " + resthost.url);
+	if (resthost.url == wfRestHost.toLowerCase()){
+		restHostobj = resthost;
+		System.debug(".return resthost object.." + restHostobj);
+		var flag = false;
+		break
+	}
+} 
+if (flag == true)
+{
+	System.error("Please check the provided URL. ");
+}
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+System.log("******** Get the Creds Inputs ********");
+System.log("Commvault URL : "+commvaultResHost.url)
+System.log("Commvault Configuration : "+attCommvaultConf);
+System.log("");
+
+//Main script
+try
+{
+	//Get the attributes of creds
+	var attributes = attCommvaultConf.attributes;
+	for each(var attribute in attributes)
+	{
+		System.log("Quering Attribute : "+attribute.name);
+		System.log("Quering Attribute URL : "+attribute.value.url+" and matching with "+commvaultResHost.url);
+		System.log("Quering Attribute Username : "+attribute.value.username);
+		//Match the URL with the input URL
+		if(attribute.value.url.toLowerCase() == commvaultResHost.url.toLowerCase())
+		{
+			restUser = attribute.value.username;
+			restPassword = attribute.value.password;
+			System.log("Matching Attribute : "+attribute.name);
+			System.log("Matching URL : "+attribute.value.url);
+			System.log("Matching Username : "+restUser);
+			System.log("Matching Password : "+restPassword);
+			System.log("");
+			break;
+		}
+		System.log("");
+	}
+	if(restUser && restPassword)
+	{
+		System.log("The creds is found for instance : "+commvaultResHost.url);
+		System.log("Username : "+restUser);
+		System.log("Password : "+restPassword);
+	}
+	else
+	{
+		throw "The Username and/or Password is not found for instance : "+commvaultResHost.url;
+	}
+}
+catch(e)
+{
+	var error = "Error occured in 'Get the Creds' Task. Error Details : "+e;
+	throw error;
+}
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+var url = "webconsole/api/Login"
+//var creds = '{"password": "Q2hhbmdlbWUxMjMk","username": "dsoteam"}'
+var creds = '{"password": "'+restPassword+'","username": "'+restUser+'"}';
+System.log(creds);
+var res = executeREST(url, "POST", creds);
+
+authToken = res.token
+System.log("Auth Token is : "+authToken)
+
+function executeREST(operationUrl, method, body)
+{
+	System.debug("operation: " + operationUrl + ", Request Type: " + method);
+	var request = commvaultResHost.createRequest(method, operationUrl, body);
+	request.contentType = "application/json";
+	//request.setHeader("Authorization", "Basic UnJkLlN2Y2Rzb3BocGlwYW06OSRjR21eNXdzMlRiVDNKZWNNNUQ=");
+	request.setHeader("Accept", "application/json");
+	
+	var response = request.execute();
+	//System.log(JSON.stringify(response))
+
+	if (response.statusCode == 200)
+	{
+		return System.getModule("com.dedicatedcloud.library.rest").getJSONFromString(response.contentAsString);
+	}
+	else
+	{
+		var json = System.getModule("com.dedicatedcloud.library.rest").getJSONFromString(response.contentAsString);
+		System.error('REST request failed: ' + json.message);
+		throw 'REST request failed: ' + json.message;
+	}
+} 
