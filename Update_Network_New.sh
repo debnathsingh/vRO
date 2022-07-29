@@ -13,12 +13,13 @@ if [[ -f $networkEth ]];then
         echo "The hostname is '$vmhostname'"
 
         if [[ -f $masterEth ]];then
+		echo "The master file '$masterEth' is found in $(pwd)"
                 echo "Generating the new Ethernet '$networkEth' from '$masterEth'"
-                #sed 's/INTERFACE_NAME/eth0/g' $masterEth |  sed 's/INTERFACE_DEVICE/eth0/g' | sed 's/DHCPHOSTNAME/$vmhostname/g` > $networkEth
+                sed 's/INTERFACE_NAME/eth0/g' $masterEth | sed 's/INTERFACE_DEVICE/eth0/g' | sed "s/DHCPHOSTNAME/$vmhostname/g" > $networkEth
                 echo "The new Ethernet '$networkEth' is generated"
         else
                 echo "The master file '$masterEth' is not found in $(pwd)"
         fi
 else
-        echo "The network interface '$networkEth' is missing"
+        echo "The network interface '$networkEth' is missing in $(pwd)"
 fi
