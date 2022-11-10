@@ -1,0 +1,10 @@
+﻿Backup job summary
+ Report generated on Nov 10, 2022, 9:33:47 AM
+
+Summary
+"Job status","Total Jobs","Size of Application","Media Size","Protected Objects","Failed Objects","Failed Folders"
+"Completed","2165","47592699354876","1935045249601","2830964","13","24"
+"No Run","5","0","0","0","0","0"
+"Completed with errors","3","3573983866","215687182","6927","451","0"
+"Running","1","64753716","0","34","0","0"
+
