@@ -1,0 +1,10 @@
+Application Install/Uninstall Operations
+7b766a96-aecd-449c-a0f6-ca98d39b5d25
+
+wfTransactionID
+wfRequestorName
+wfOsType
+wfServerName
+wfApplication
+wfAction
+wfRepoType
