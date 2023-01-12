@@ -8,3 +8,5 @@ wfServerName
 wfApplication
 wfAction
 wfRepoType
+wfEnvironment
+wfTrueSightInfrastructureStagingOrProduction
