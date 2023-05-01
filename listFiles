@@ -1,0 +1,189 @@
+#[#scriptContent#=#string##Inputs
+<#$RootFolder = 'D:\'
+$path = "D:\Integrated_Delivery_Scripts_Test\"
+$filename = "\FilesAndFolders_"+"$(Get-Date -Format ddMMyyyyhhmmss).txt"
+#>
+
+
+try{
+
+
+$RootFolder = "[RootFolder]"
+$path = "[path]"
+$filename = "[filename]"
+
+function Get-FormattedSize{
+    param(
+        [parameter( Mandatory = $true )]
+        [int64]$Size
+        )
+
+    switch( $Size ){
+        { $Size -gt 1GB }{ '{0:N2} GB' -f ( $Size  / 1GB ); break }
+        { $Size -gt 1MB }{ '{0:N2} MB' -f ( $Size  / 1MB ); break }
+        { $Size -gt 1KB }{ '{0:N2} KB' -f ( $Size  / 1KB ); break }
+        default { "$Size B"; break }
+        }
+    }
+if (-not $RootFolder.EndsWith('\')) {
+            $RootFolder = "$RootFolder\"
+        }
+$slashcount=([regex]::Matches($RootFolder, '\\' )).count
+#Write-Host "Target Path: $RootFolder"
+#Write-Host "Slash count = $slashcount"
+##Check for Drive Letter##
+#if($Path.Contains(':') -and $slashcount -lt 2)
+if($slashcount -lt 2)
+{
+
+$Results = New-Object -TypeName System.Collections.ArrayList
+
+#$RootSize = Get-ChildItem -Path $RootFolder -Recurse |
+$RootSize = Get-ChildItem -Path $RootFolder -Recurse -ErrorAction SilentlyContinue -Force|
+        Where-Object { -not $_.PSIsContainer } |
+        Measure-Object -Property Length -Sum |
+        Select-Object -ExpandProperty Sum
+
+$null = $Results.Add(( New-Object -TypeName psobject -Property @{
+    Path = $RootFolder
+    Size = Get-FormattedSize -Size $RootSize
+    } ))
+
+$null = $Results.Add( '' )
+#Write-Host "Check root folder complete"
+#$Folders = Get-ChildItem -Path $RootFolder -Recurse |
+$Folders = Get-ChildItem -Path $RootFolder -ErrorAction SilentlyContinue -Force|
+    Where-Object { $_.PSIsContainer } |
+    Select-Object -ExpandProperty FullName
+
+$Folders = ,$RootFolder + $Folders
+
+$null = foreach( $Folder in $Folders ){
+    #$FolderSize = Get-ChildItem -Path $Folder -Recurse |
+        #$FolderSize = Get-ChildItem -Path $Folder -Depth 1 -Recurse -ErrorAction SilentlyContinue -Force |
+		$FolderSize = Get-ChildItem -Path $Folder -Depth 1 -Recurse -ErrorAction SilentlyContinue -Force |
+        Where-Object { -not $_.PSIsContainer } |
+        Measure-Object -Property Length -Sum |
+        Select-Object -ExpandProperty Sum
+
+    $Results.Add(( New-Object -TypeName psobject -Property @{
+    Path = (" ")+$Folder
+    Size = Get-FormattedSize -Size $FolderSize
+    } ))
+
+    $Files = Get-ChildItem -Path $Folder -ErrorAction SilentlyContinue -Force | Where-Object { -not $_.PSIsContainer }
+
+
+    foreach( $File in $Files ){
+        $Results.Add(( New-Object -TypeName psobject -Property @{
+            Path = ("  |_ ") +$File.Name
+            Size = Get-FormattedSize -Size $File.Length
+            } ))
+        }
+
+    $Results.Add( '' )
+    }
+
+$a = $Results |
+    Select-Object -Property Path, Size
+
+
+$outPath = $path+$filename
+#Write-Host "OutPath $outPath"
+#$a | Out-File -FilePath $outPath -Force
+$psObj = New-Object PSObject -Property @{
+    "Disk Details" = $a
+    
+}
+
+#$psObj | Format-List
+foreach($obj in $psObj.PSObject.Properties)
+    {
+            $obj.Name
+            "*************************************************************************************"
+            $obj.Value
+            ""
+            ""
+    }
+}
+
+##Recursive check###
+else{
+
+$Results = New-Object -TypeName System.Collections.ArrayList
+
+$RootSize = Get-ChildItem -Path $RootFolder -Recurse -ErrorAction SilentlyContinue -Force |
+#$RootSize = Get-ChildItem -Path $RootFolder -Recurse -ErrorAction SilentlyContinue -Force|
+        Where-Object { -not $_.PSIsContainer } |
+        Measure-Object -Property Length -Sum |
+        Select-Object -ExpandProperty Sum
+
+$null = $Results.Add(( New-Object -TypeName psobject -Property @{
+    Path = $RootFolder
+    Size = Get-FormattedSize -Size $RootSize
+    } ))
+
+$null = $Results.Add( '' )
+
+$Folders = Get-ChildItem -Path $RootFolder -Recurse -ErrorAction SilentlyContinue -Force|
+#$Folders = Get-ChildItem -Path $RootFolder -ErrorAction SilentlyContinue -Force|
+    Where-Object { $_.PSIsContainer } |
+    Select-Object -ExpandProperty FullName
+
+$Folders = ,$RootFolder + $Folders
+
+$null = foreach( $Folder in $Folders ){
+    #$FolderSize = Get-ChildItem -Path $Folder -Recurse -ErrorAction SilentlyContinue -Force |
+	$FolderSize = Get-ChildItem -Path $Folder -ErrorAction SilentlyContinue -Force |
+    #    $FolderSize = Get-ChildItem -Path $Folder -Recurse -ErrorAction SilentlyContinue -Force |
+        Where-Object { -not $_.PSIsContainer } |
+        Measure-Object -Property Length -Sum |
+        Select-Object -ExpandProperty Sum
+
+    $Results.Add(( New-Object -TypeName psobject -Property @{
+    Path = (" ")+$Folder
+    Size = Get-FormattedSize -Size $FolderSize
+    } ))
+
+    $Files = Get-ChildItem -Path $Folder -ErrorAction SilentlyContinue -Force| Where-Object { -not $_.PSIsContainer }
+
+
+    foreach( $File in $Files ){
+        $Results.Add(( New-Object -TypeName psobject -Property @{
+            Path = ("  |_ ") +$File.Name
+            Size = Get-FormattedSize -Size $File.Length
+            } ))
+        }
+
+    $Results.Add( '' )
+    }
+
+$a = $Results |
+    Select-Object -Property Path, Size
+
+#Write-Host $a
+$outPath = $path+$filename
+#Write-Host "OutPath $outPath"
+#$a | Out-File -FilePath $outPath -Force
+
+$psObj = New-Object PSObject -Property @{
+    "Disk Details" = $a
+    
+}
+
+#$psObj | Format-List
+foreach($obj in $psObj.PSObject.Properties)
+    {
+            $obj.Name
+            "*************************************************************************************"
+            $obj.Value
+            ""
+            ""
+    }
+}
+
+#End of try block
+}catch{
+      "UNIQUEERRORCODE : Error occured in the scripts $($_.Exception)"
+      Write-Host ERROR "Error occured in the scripts $($_.Exception)"
+}#+#scriptTimeOut#=#number#1800.0#+#scriptWorkingDirectory#=#string##+#scriptRefreshTime#=#number#5.0#+#deleteResourceAfterRun#=#boolean#true#+#scriptType#=#string#powershell#+#resourceSearchReplace#=#boolean#false#+#scriptInteractiveSession#=#boolean#false#+#resourceToCopy#=#Any#Any#__NULL__#+#copyResource#=#boolean#false#]#
