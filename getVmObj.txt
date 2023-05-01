@@ -1,0 +1,18 @@
+System.log("******** getVmObjCLP Inputs ********");
+var vmStr = VcPlugin.getAllVirtualMachines(null, "xpath:matches(name, '(?i)" + vmServer + "')");
+System.log("VM Object : "+vmStr);
+if (!vmStr || vmStr.length == 0)
+{
+	throw "No virtual machine match for: '" + vmServer + "'";
+}
+else if (vmStr.length == 1)
+{
+	System.log("VM found: " + vmServer);
+	vms = vmStr[0];
+	System.log(vms);
+	return vms;
+}
+else
+{
+	throw "More than one VM found for: '" + vmServer + "'";
+}
