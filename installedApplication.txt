@@ -1,0 +1,4 @@
+Get-WmiObject Win32_Product | select Name,Version,Vendor | ft -Wrap
+
+echo '********************************';cat /proc/version ; echo '***********************************';rpm -qa
+echo '********************************';cat /proc/version ; echo '***********************************';rpm -qa
