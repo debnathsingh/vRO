@@ -1,1 +1,5 @@
-#[#scriptContent#=#string#cd '/var'; sudo du -a -h --max-depth=1 | sort -hr#+#scriptTimeOut#=#number#60.0#+#scriptWorkingDirectory#=#string##+#scriptRefreshTime#=#number#5.0#+#deleteResourceAfterRun#=#boolean#true#+#scriptType#=#string#bash#+#resourceSearchReplace#=#boolean#false#+#scriptInteractiveSession#=#boolean#false#+#resourceToCopy#=#Any#Any#__NULL__#+#copyResource#=#boolean#false#]#
+#[#scriptContent#=#string#echo -e 'Path Details : 
+*************************************************
+
+Size        Path
+___         ___'; cd '/newpath'; sudo du -a -h | sort -hr#+#scriptTimeOut#=#number#60.0#+#scriptWorkingDirectory#=#string##+#scriptRefreshTime#=#number#5.0#+#deleteResourceAfterRun#=#boolean#true#+#scriptType#=#string#bash#+#resourceSearchReplace#=#boolean#false#+#scriptInteractiveSession#=#boolean#false#+#resourceToCopy#=#Any#Any#__NULL__#+#copyResource#=#boolean#false#]#

@@ -1,5 +1,4 @@
-#[#scriptContent#=#string##Inputs
-<#$RootFolder = 'D:\'
+#[#scriptContent#=#string#<#$RootFolder = 'D:\'
 $path = "D:\Integrated_Delivery_Scripts_Test\"
 $filename = "\FilesAndFolders_"+"$(Get-Date -Format ddMMyyyyhhmmss).txt"
 #>
@@ -71,7 +70,7 @@ $null = foreach( $Folder in $Folders ){
     Size = Get-FormattedSize -Size $FolderSize
     } ))
 
-    $Files = Get-ChildItem -Path $Folder -ErrorAction SilentlyContinue -Force | Where-Object { -not $_.PSIsContainer }
+    $Files = Get-ChildItem -Path $Folder -ErrorAction SilentlyContinue -Force | Where-Object { -not $_.PSIsContainer } | sort-Object -property Length -Descending
 
 
     foreach( $File in $Files ){
@@ -145,7 +144,7 @@ $null = foreach( $Folder in $Folders ){
     Size = Get-FormattedSize -Size $FolderSize
     } ))
 
-    $Files = Get-ChildItem -Path $Folder -ErrorAction SilentlyContinue -Force| Where-Object { -not $_.PSIsContainer }
+    $Files = Get-ChildItem -Path $Folder -ErrorAction SilentlyContinue -Force| Where-Object { -not $_.PSIsContainer } | sort-Object -property Length -Descending
 
 
     foreach( $File in $Files ){
@@ -158,8 +157,7 @@ $null = foreach( $Folder in $Folders ){
     $Results.Add( '' )
     }
 
-$a = $Results |
-    Select-Object -Property Path, Size
+$a = $Results | Select-Object -Property Path, Size | Sort-Object -Property Size -Descending
 
 #Write-Host $a
 $outPath = $path+$filename
