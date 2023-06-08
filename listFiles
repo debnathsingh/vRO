@@ -1,7 +1,26 @@
-#[#scriptContent#=#string#<#$RootFolder = 'D:\'
-$path = "D:\Integrated_Delivery_Scripts_Test\"
-$filename = "\FilesAndFolders_"+"$(Get-Date -Format ddMMyyyyhhmmss).txt"
-#>
+#[#scriptContent#=#string#<#
+        .SYNOPSIS
+        List files and folders for the path provided
+
+        .DESCRIPTION
+        This script will list files and folders for the path provided .
+
+        .PARAMETER Name
+        Root Folder
+        
+		.INPUTS
+        RootFolder name
+        
+		.OUTPUTS
+        A report will be generated listing the files and folders with the size
+
+        .VERSION
+        1.0
+
+        .DEVELOPER
+        vRO Automation Team
+    #>
+
 
 
 try{
@@ -10,6 +29,42 @@ try{
 $RootFolder = "[RootFolder]"
 $path = "[path]"
 $filename = "[filename]"
+
+function Get-ChildItemDeep
+{
+  param(
+    [Parameter(ParameterSetName='Items', Position=0, ValueFromPipeline=$true, ValueFromPipelineByPropertyName=$true)]
+    [string[]]
+    ${Path},
+
+    [Parameter(Position=1)]
+    [string]
+    ${Filter},
+
+    [Parameter(Mandatory=$true)]
+    [int]
+    ${Depth}
+  )
+
+  # Make a copy of the params for `Get-ChildItem`
+  $GCIParams = @{}
+  foreach($ParamName in $PSBoundParameters.Keys.Where({$_ -ne 'Depth'})){
+    $GCIParams[$ParamName] = $PSBoundParameters[$ParamName]
+  }
+
+  # Decrease depth for next call
+  $PSBoundParameters['Depth']--
+
+  # Call Get-ChildItem
+  Get-ChildItem @GCIParams |ForEach-Object {
+    $_
+    # Recurse if appropriate
+    if($_.PSIsContainer -and $Depth -gt 1){
+      $PSBoundParameters['Path'] = $_.FullName
+      Get-ChildItemDeep @PSBoundParameters
+    }
+  }
+}
 
 function Get-FormattedSize{
     param(
@@ -58,19 +113,25 @@ $Folders = Get-ChildItem -Path $RootFolder -ErrorAction SilentlyContinue -Force|
 $Folders = ,$RootFolder + $Folders
 
 $null = foreach( $Folder in $Folders ){
-    #$FolderSize = Get-ChildItem -Path $Folder -Recurse |
-        #$FolderSize = Get-ChildItem -Path $Folder -Depth 1 -Recurse -ErrorAction SilentlyContinue -Force |
-		$FolderSize = Get-ChildItem -Path $Folder -Depth 1 -Recurse -ErrorAction SilentlyContinue -Force |
-        Where-Object { -not $_.PSIsContainer } |
-        Measure-Object -Property Length -Sum |
-        Select-Object -ExpandProperty Sum
-
+    
+		if((Get-Host).Version.Major -lt 5){
+			$FolderSize = Get-ChildItemDeep -Path $Folder -Depth 1 -ErrorAction SilentlyContinue |
+			Where-Object { -not $_.PSIsContainer } |
+			Measure-Object -Property Length -Sum |
+			Select-Object -ExpandProperty Sum
+		}
+		else{
+			$FolderSize = Get-ChildItem -Path $Folder -Depth 1 -Recurse -ErrorAction SilentlyContinue -Force |
+			Where-Object { -not $_.PSIsContainer } |
+			Measure-Object -Property Length -Sum |
+			Select-Object -ExpandProperty Sum
+		}
     $Results.Add(( New-Object -TypeName psobject -Property @{
     Path = (" ")+$Folder
     Size = Get-FormattedSize -Size $FolderSize
     } ))
 
-    $Files = Get-ChildItem -Path $Folder -ErrorAction SilentlyContinue -Force | Where-Object { -not $_.PSIsContainer } | sort-Object -property Length -Descending
+    $Files = Get-ChildItem -Path $Folder -ErrorAction SilentlyContinue -Force | Where-Object { -not $_.PSIsContainer } | sort-Object -property length -Descending
 
 
     foreach( $File in $Files ){
@@ -132,19 +193,25 @@ $Folders = Get-ChildItem -Path $RootFolder -Recurse -ErrorAction SilentlyContinu
 $Folders = ,$RootFolder + $Folders
 
 $null = foreach( $Folder in $Folders ){
-    #$FolderSize = Get-ChildItem -Path $Folder -Recurse -ErrorAction SilentlyContinue -Force |
-	$FolderSize = Get-ChildItem -Path $Folder -ErrorAction SilentlyContinue -Force |
-    #    $FolderSize = Get-ChildItem -Path $Folder -Recurse -ErrorAction SilentlyContinue -Force |
-        Where-Object { -not $_.PSIsContainer } |
-        Measure-Object -Property Length -Sum |
-        Select-Object -ExpandProperty Sum
+		if((Get-Host).Version.Major -lt 5){
+			$FolderSize = Get-ChildItemDeep -Path $Folder -Depth 1 -ErrorAction SilentlyContinue |
+			Where-Object { -not $_.PSIsContainer } |
+			Measure-Object -Property Length -Sum |
+			Select-Object -ExpandProperty Sum
+		}
+		else{
+			$FolderSize = Get-ChildItem -Path $Folder -ErrorAction SilentlyContinue -Force |
+			Where-Object { -not $_.PSIsContainer } |
+			Measure-Object -Property Length -Sum |
+			Select-Object -ExpandProperty Sum
+		}
 
     $Results.Add(( New-Object -TypeName psobject -Property @{
     Path = (" ")+$Folder
     Size = Get-FormattedSize -Size $FolderSize
     } ))
 
-    $Files = Get-ChildItem -Path $Folder -ErrorAction SilentlyContinue -Force| Where-Object { -not $_.PSIsContainer } | sort-Object -property Length -Descending
+    $Files = Get-ChildItem -Path $Folder -ErrorAction SilentlyContinue -Force| Where-Object { -not $_.PSIsContainer } | sort-Object -property length -Descending
 
 
     foreach( $File in $Files ){
@@ -157,7 +224,8 @@ $null = foreach( $Folder in $Folders ){
     $Results.Add( '' )
     }
 
-$a = $Results | Select-Object -Property Path, Size | Sort-Object -Property Size -Descending
+$a = $Results |
+    Select-Object -Property Path, Size
 
 #Write-Host $a
 $outPath = $path+$filename
