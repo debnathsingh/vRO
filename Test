@@ -14,3 +14,44 @@ dellplo01vvcs01.infosolco.com
 
 
 https://172.17.209.80/OS-Windows/healthCheck_DSO00001836_AHPPMWJUMP08_15052023093544.txt
+
+Provision Volume
+GET api/1.17/host/<host>
+GET api/1.17/hgroup/<hgroup>
+GET api/1.17/pgroup/<pgroup>
+POST api/1.17/volume/<volumename>
+POST api/1.17/hgroup/<hgroupname>/volume/<volumename>
+POST api/1.17/host/<host>/volume/<volumename>
+POST api/1.17/volume/<volumename>/pgroup/<pgroupname>
+
+Expand a volume
+GET api/1.17/volume/<volumename>
+PUT api/1.17/volume/<volumename>
+
+Unassign a volume
+GET api/1.17/volume/<volumename>
+DELETE api/1.17/hgroup/<hgroupname>/volume/<volumename>
+DELETE api/1.17/host/<host>/volume/<volumename>
+DELETE api/1.17/volume/<volumename>/pgroup/<pgroupname>
+
+Delete a volume
+GET api/1.17/volume/<volumename>
+DELETE GET api/1.17/volume/<volumename>
+
+Snapshot a Volume
+GET api/1.17/volume/<volumename>
+POST api/1.17/volume
+
+Delete Snapshot a Volume
+GET api/1.17/volume/<volumename>
+DELETE api/1.17/volume/<snapshot Name>
+
+Pure Health Report
+GET api/1.17/array
+api/1.17/message?audit=true
+api/1.17/hardware
+
+Pure Capacity Report
+Pure Storage Cmdlets
+
+nucleusdifgpiuser
