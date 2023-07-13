@@ -55,3 +55,51 @@ Pure Capacity Report
 Pure Storage Cmdlets
 
 nucleusdifgpiuser
+System.log("******** Get the Token Inputs ********");
+System.log("Pure Storage URL : "+wfPureUrl)
+System.log("Pure Storage Configuration : "+attPureConf);
+System.log("");
+
+//Main script
+try
+{
+	//Get the attributes of Token
+	var attributes = attPureConf.attributes;
+	for each(var attribute in attributes)
+	{
+		System.log("Quering Attribute : "+attribute.name);
+		System.log("Quering Attribute URL : "+attribute.value.url+" and matching with "+wfPureUrl);
+		System.log("Quering Attribute Token : "+attribute.value.token);
+		System.log("Quering Attribute Version : "+attribute.value.version);
+		//Match the URL with the input URL
+		if(attribute.value.url.toLowerCase() == wfPureUrl.toLowerCase())
+		{
+			attPureToken = attribute.value.token;
+			attVersion = attribute.value.version;
+			//Get the token and version of Pure Storage instance
+			System.log("Matching Attribute : "+attribute.name);
+			System.log("Matching URL : "+attribute.value.url);
+			System.log("Matching Token : "+attPureToken);
+			System.log("Matching Version : "+attVersion);
+			System.log("");
+			break;
+		}
+		System.log("");
+	}
+	if(attPureToken && attVersion)
+	{
+		System.log("The token and version is found for the instance : "+wfPureUrl);
+		outVersion = attVersion;
+		System.log("Token : "+attPureToken);
+		System.log("Version : "+attVersion);
+	}
+	else
+	{
+		throw "Token and/or Version is missing for instance : "+wfPureUrl;
+	}
+}
+catch(e)
+{
+	var error = "Error occured in 'Get the Token' Task. Error Details : "+e;
+	throw error;
+}
